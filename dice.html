@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>真实骰子</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    /* 骰子容器 */
+    .dice {
+      width: 120px;
+      height: 120px;
+      margin: 40px auto;
+      background-color: white;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    /* 点数圆点样式 */
+    .dot {
+      width: 20px;
+      height: 20px;
+      background-color: #333;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    /* 不同点数的布局 */
+    .dice::before,
+    .dice::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #333;
+      border-radius: 50%;
+    }
+
+    /* 清除所有点 */
+    .dice .dot,
+    .dice::before,
+    .dice::after {
+      display: none;
+    }
+
+    /* 点数 1 */
+    .dice.one .dot.center {
+      display: block;
+    }
+
+    /* 点数 2 */
+    .dice.two .dot.top-left,
+    .dice.two .dot.bottom-right {
+      display: block;
+    }
+
+    /* 点数 3 */
+    .dice.three .dot.top-left,
+    .dice.three .dot.center,
+    .dice.three .dot.bottom-right {
+      display: block;
+    }
+
+    /* 点数 4 */
+    .dice.four .dot.top-left,
+    .dice.four .dot.top-right,
+    .dice.four .dot.bottom-left,
+    .dice.four .dot.bottom-right {
+      display: block;
+    }
+
+    /* 点数 5 */
+    .dice.five .dot.top-left,
+    .dice.five .dot.top-right,
+    .dice.five .dot.center,
+    .dice.five .dot.bottom-left,
+    .dice.five .dot.bottom-right {
+      display: block;
+    }
+
+    /* 点数 6 */
+    .dice.six .dot.top-left,
+    .dice.six .dot.top-center,
+    .dice.six .dot.top-right,
+    .dice.six .dot.bottom-left,
+    .dice.six .dot.bottom-center,
+    .dice.six .dot.bottom-right {
+      display: block;
+    }
+
+    /* 布局位置类 */
+    .dot.center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .dot.top-left      { top: 25%; left: 25%; }
+    .dot.top-center    { top: 25%; left: 50%; transform: translateX(-50%); }
+    .dot.top-right     { top: 25%; right: 25%; }
+    .dot.bottom-left   { bottom: 25%; left: 25%; }
+    .dot.bottom-center { bottom: 25%; left: 50%; transform: translateX(-50%); }
+    .dot.bottom-right  { bottom: 25%; right: 25%; }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* 动画：掷出时缩放 */
+    .dice.animate {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>真实骰子游戏</h1>
+
+  <!-- 骰子容器 -->
+  <div class="dice" id="dice">
+    <span class="dot center"></span>
+    <span class="dot top-left"></span>
+    <span class="dot top-center"></span>
+    <span class="dot top-right"></span>
+    <span class="dot bottom-left"></span>
+    <span class="dot bottom-center"></span>
+    <span class="dot bottom-right"></span>
+  </div>
+
+  <button onclick="rollDice()">🎲 掷色子</button>
+
+  <script>
+    function rollDice() {
+      const dice = document.getElementById("dice");
+
+      // 移除旧的动画和类
+      dice.classList.remove("animate");
+      dice.className = "dice"; // 重置类
+
+      // 随机生成 1-6
+      const result = Math.floor(Math.random() * 6) + 1;
+
+      // 添加对应类名显示点数
+      switch(result) {
+        case 1:
+          dice.classList.add("one");
+          break;
+        case 2:
+          dice.classList.add("two");
+          break;
+        case 3:
+          dice.classList.add("three");
+          break;
+        case 4:
+          dice.classList.add("four");
+          break;
+        case 5:
+          dice.classList.add("five");
+          break;
+        case 6:
+          dice.classList.add("six");
+          break;
+      }
+
+      // 添加动画
+      setTimeout(() => {
+        dice.classList.add("animate");
+      }, 10);
+
+      // 显示结果（可选）
+      setTimeout(() => {
+        alert("你掷出了：" + result);
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>
