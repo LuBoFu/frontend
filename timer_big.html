@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>计时器</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f0f2f5;
+  /* 响应式居中布局 */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.timer-container {
+  /* 自适应宽度，最大 400px */
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 20px; /* 小屏更紧凑 */
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.display {
+  /* 使用视口单位，自动缩放 */
+  font-size: 8vw;        /* 根据屏幕宽度自动调整大小 */
+  font-size: min(8vw, 72px); /* 最大不超过 72px，防止大屏过大 */
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.2;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button {
+  flex: 1;
+  min-width: 80px;
+  padding: 12px 8px;
+  font-size: 5vw;        /* 按屏幕缩放按钮文字 */
+  font-size: min(5vw, 18px); /* 最大 18px */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start {
+  background-color: #4caf50;
+  color: white;
+}
+
+.stop {
+  background-color: #f44336;
+  color: white;
+}
+
+.reset {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+  <div class="timer-container">
+    <div class="display" id="display">00:00:00</div>
+    <div class="buttons">
+      <button class="start" id="start">开始</button>
+      <button class="stop" id="stop">停止</button>
+      <button class="reset" id="reset">重置</button>
+    </div>
+  </div>
+
+  <script>
+    let hours = 0, minutes = 0, seconds = 0;
+    let timer = null;
+
+    const display = document.getElementById('display');
+    const startBtn = document.getElementById('start');
+    const stopBtn = document.getElementById('stop');
+    const resetBtn = document.getElementById('reset');
+
+    function updateDisplay() {
+      display.textContent = [
+        hours.toString().padStart(2, '0'),
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+      ].join(':');
+    }
+
+    function tick() {
+      seconds++;
+      if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes === 60) {
+          minutes = 0;
+          hours++;
+        }
+      }
+      updateDisplay();
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (timer === null) {
+        timer = setInterval(tick, 1000);
+      }
+    });
+
+    stopBtn.addEventListener('click', () => {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearInterval(timer);
+      timer = null;
+      hours = 0; minutes = 0; seconds = 0;
+      updateDisplay();
+    });
+  </script>
+
+</body>
+</html>
